@@ -1,0 +1,21 @@
+ Volume in Laufwerk C: hat keine Bezeichnung.
+ Volumeseriennummer: 72FD-81A7
+
+ Verzeichnis von C:\Users\mail\Downloads\SS24_BAM1_BusInt-main (2)\SS24_BAM1_BusInt-main\loan-broker
+
+22.06.2024  21:46    <DIR>          .
+22.06.2024  21:46    <DIR>          ..
+22.06.2024  00:06             1.270 .classpath
+22.06.2024  00:06                 9 .gitignore
+22.06.2024  00:06               548 .project
+22.06.2024  00:06    <DIR>          .settings
+22.06.2024  21:46                 0 aufbau.txt
+22.06.2024  21:27               613 Dockerfile
+22.06.2024  02:09             6.212 pom.xml
+22.06.2024  00:06             1.955 README.md
+22.06.2024  00:06    <DIR>          src
+22.06.2024  00:06    <DIR>          target
+22.06.2024  00:06               368 udps.groovy
+22.06.2024  00:06               369 udps.pl
+               9 Datei(en),         11.344 Bytes
+               5 Verzeichnis(se), 112.550.875.136 Bytes frei

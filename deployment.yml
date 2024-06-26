@@ -1,0 +1,160 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loanbroker-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: loanbroker
+  template:
+    metadata:
+      labels:
+        app: loanbroker
+    spec:
+      containers:
+      - name: loanbroker
+        image: lennard2001/loanbroker:lennard2001
+        ports:
+        - containerPort: 8080
+        env:
+        - name: SPRING_ACTIVEMQ_BROKER_URL
+          value: tcp://activemq-service:61616
+        - name: SPRING_ACTIVEMQ_USER
+          value: admin
+        - name: SPRING_ACTIVEMQ_PASSWORD
+          value: admin
+        - name: CREDIT_BUREAU_URL
+          value: http://creditbureau-service:8081
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: loanbroker-service
+spec:
+  selector:
+    app: loanbroker
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: creditbureau-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: creditbureau
+  template:
+    metadata:
+      labels:
+        app: creditbureau
+    spec:
+      containers:
+      - name: creditbureau
+        image: lennard2001/creditbureau:lennard2001
+        ports:
+        - containerPort: 8081
+        env:
+        - name: SPRING_ACTIVEMQ_BROKER_URL
+          value: tcp://activemq-service:61616
+        - name: SPRING_ACTIVEMQ_USER
+          value: admin
+        - name: SPRING_ACTIVEMQ_PASSWORD
+          value: admin
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: creditbureau-service
+spec:
+  selector:
+    app: creditbureau
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8081
+      targetPort: 8081
+      nodePort: 30081
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: activemq-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: activemq
+  template:
+    metadata:
+      labels:
+        app: activemq
+    spec:
+      containers:
+      - name: activemq
+        image: rmohr/activemq:latest
+        ports:
+        - containerPort: 61616
+        - containerPort: 8161
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: activemq-service
+spec:
+  selector:
+    app: activemq
+  ports:
+    - name: amq
+      protocol: TCP
+      port: 61616
+      targetPort: 61616
+      nodePort: 31616
+    - name: web
+      protocol: TCP
+      port: 8161
+      targetPort: 8161
+      nodePort: 31816
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: nginx
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30088
+  type: NodePort

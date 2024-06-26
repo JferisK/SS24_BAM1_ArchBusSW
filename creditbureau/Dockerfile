@@ -1,0 +1,30 @@
+# Verwenden eines Basis-Images mit Java-Unterstützung und Maven
+FROM openjdk:17-jdk-slim
+
+# Installieren von Maven
+RUN apt-get update && \
+    apt-get install -y maven && \
+    apt-get clean
+
+# Setzen des Arbeitsverzeichnisses im Container
+WORKDIR /app
+
+# Kopieren der pom.xml und Herunterladen der Abhängigkeiten
+COPY pom.xml .
+COPY .mvn .mvn
+COPY mvnw mvnw
+COPY mvnw.cmd mvnw.cmd
+
+# Kopieren des gesamten Quellcodes in das Arbeitsverzeichnis
+COPY src ./src
+# Neue Zeile, um die mvnw Datei ausführbar zu machen
+RUN chmod +x mvnw
+
+# Bauen des Projekts
+RUN ./mvnw clean package -DskipTests
+
+# Exponieren der Ports
+EXPOSE 8081
+
+# Startbefehl für die Anwendung
+CMD ["java", "-jar", "target/creditbureau-0.0.1-SNAPSHOT.jar"]

@@ -1,0 +1,87 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: loanbroker-service
+spec:
+  selector:
+    app: loanbroker
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: bank1-service
+spec:
+  selector:
+    app: bank1
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8082
+  type: LoadBalancer
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: bank2-service
+spec:
+  selector:
+    app: bank2
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8083
+  type: LoadBalancer
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: bank3-service
+spec:
+  selector:
+    app: bank3
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8084
+  type: LoadBalancer
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: bank4-service
+spec:
+  selector:
+    app: bank4
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8085
+  type: LoadBalancer
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: creditbureau-service
+spec:
+  selector:
+    app: creditbureau
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8081
+  type: LoadBalancer
